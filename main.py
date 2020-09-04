@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as BS
 import requests
 import pyttsx3
 from tkinter import *
-
+import webbrowser
 
 def speak(phrase):
     speak_engine = pyttsx3.init()
@@ -20,6 +20,17 @@ def getWeather():
     phrase = arr[2]
     speak(phrase)
 
+def openlink(site):
+    if site == 'яндекс':
+        line = 'yandex.ru'
+    elif (site == 'гугл') or (site == 'гугол'):
+        line = 'google.ru'
+    elif (site == 'ютуб') or (site == 'ютьюб') or (site == 'youtube'):
+        line = 'youtube.com'
+    elif (site == 'вконтакте') or (site == 'вк') or (site == 'vk'):
+        line = 'vk.com'
+    webbrowser.open('https://' + line)
+
 def start():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -29,9 +40,14 @@ def start():
     try:
         voice = r.recognize_google(audio, language="ru-RU").lower()
         print(voice)
-
-        if voice == "погода":
+        words = voice.split()
+        if words[0] == "погода":
             getWeather()
+        elif words[0] == 'открой':
+            try:
+                openlink(words[1])
+            except:
+                speak("Я не поняла вас")
         else:
             speak("Я не поняла вас")
 
@@ -40,11 +56,13 @@ def start():
     except sr.RequestError as e:
         print("Connection error {0}".format(e))
 
-
-root = Tk()
-root.title("Voice Assistant 1.0")
-root.geometry("300x250")
-btn = Button(text="Start", command=start)
-btn.pack()
-root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    root.title("Voice Assistant 1.0")
+    root.geometry("270x200")
+    root.resizable(False,False)
+    btn = Button(root, text='Слушать', command=start)
+    btn.configure(bd=1, font=('Castellar', 25), bg='green')
+    btn.place(x=50, y=30, height=140, width=170)
+    root.mainloop()
 

@@ -1,10 +1,12 @@
-from bs4 import BeautifulSoup as BS
-import requests
 
-url = requests.get("https://sinoptik.ua/погода-нижний-новгород")
-soup = BS(url.text, features="html.parser")
-arr = []
-for el in soup.find('div', {'class': 'description'}):
-    arr.append(el)
-phrase = arr[2]
+if __name__ == '__main__':
+    a = input()
+    words = a.split()
+    print(words[0])
 
+    root = Tk()
+    root.title("Voice Assistant 1.0")
+    root.geometry("300x250")
+    btn = Button(root, text='Слушать', command=start)
+    btn.configure(bd=1, font=('Castellar', 25), bg='green')
+    btn.place(x=50, y=60, height=50, width=150)
